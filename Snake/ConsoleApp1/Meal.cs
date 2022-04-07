@@ -17,6 +17,7 @@ namespace Snake
             int x = random.Next(1, 20);
             int y = random.Next(1, 20);
             CurrentPosition = new Coordinate(x, y);
+            Draw();
         }
         public void Draw()
         {
