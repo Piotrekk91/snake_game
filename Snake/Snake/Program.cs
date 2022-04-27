@@ -8,6 +8,10 @@ namespace Snake
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
+            SnakeApp snakeApp = new SnakeApp();
+            snakeApp.MainMenu();
+
+
             bool exit = false;
             double frameRate = 1000 / 5.0;
             DateTime lastDate = DateTime.Now;

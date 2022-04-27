@@ -10,12 +10,20 @@ namespace Snake
     {
         public Coordinate CurrentPosition { get; set; }
 
-        public Meal()
+        public void CreateMeal(List<Coordinate> snakeTail)
         {
             Random random = new Random();
 
             int x = random.Next(1, 20);
             int y = random.Next(1, 20);
+            foreach(var tailUnit in snakeTail)
+            {
+                if(tailUnit.X == x && tailUnit.Y == y)
+                {
+                    CreateMeal(snakeTail);
+                    return;
+                }
+            }
             CurrentPosition = new Coordinate(x, y);
             Draw();
         }
