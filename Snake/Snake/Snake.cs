@@ -8,7 +8,7 @@ namespace Snake
 {
     internal class Snake : ISnake
     {
-        public int Length { get; set; } = 1;
+        public int Length { get; set; } = 5;
         public Direction Direction { get; set; } = Direction.Right;
         public Coordinate HeadPosition { get; set; } = new Coordinate();
         public List<Coordinate> Tail { get; set; } = new List<Coordinate>();
@@ -19,7 +19,8 @@ namespace Snake
         {
             get {
                 return (Tail.Where(c => c.X == HeadPosition.X
-                     && c.Y == HeadPosition.Y).ToList().Count > 1) || outOfRange;
+                     && c.Y == HeadPosition.Y).ToList().Count > 1)
+                     || HeadPosition.X > 100 || HeadPosition.Y > 30 || outOfRange;
             }
         }
         
@@ -49,7 +50,7 @@ namespace Snake
             {
                 Console.SetCursorPosition(HeadPosition.X, HeadPosition.Y);
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write(">");
+                Console.Write("@");
                 Tail.Add(new Coordinate(HeadPosition.X, HeadPosition.Y));
                 if(Tail.Count > this.Length)
                 {
