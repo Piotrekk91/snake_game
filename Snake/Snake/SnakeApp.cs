@@ -21,6 +21,7 @@ namespace Snake
             Console.Clear();
             GameBoard.DrawGameBoard();
             _snake = new Snake();
+            
             _meal = new Meal();
             _meal.CreateMeal(_snake.Tail);
             _isRunning = true;
@@ -60,72 +61,83 @@ namespace Snake
             //Game Loop
             while (_isRunning)
             {
-                if (Console.KeyAvailable)
+                SnakeControl();
+                GameAction();
+                
+            }
+        }
+        public void SnakeControl()
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo input = Console.ReadKey();
+                switch (input.Key)
                 {
-                    ConsoleKeyInfo input = Console.ReadKey();
-                    switch (input.Key)
+                    case ConsoleKey.Escape:
+                        _isRunning = false;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        _snake.Direction = Direction.Down;
+                        //move
+                        break;
+                    case ConsoleKey.UpArrow:
+                        _snake.Direction = Direction.Up;
+                        //move
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        _snake.Direction = Direction.Left;
+                        //move
+                        break;
+                    case ConsoleKey.RightArrow:
+                        _snake.Direction = Direction.Right;
+                        //move
+                        break;
+
+
+                }
+
+
+            }
+
+        }
+        public void GameAction()
+        {
+            if ((DateTime.Now - _lastDate).TotalMilliseconds >= _frameRate)
+            {
+                //Game Action
+                _snake.Move();
+
+
+                if (_meal.CurrentPosition.X == _snake.HeadPosition.X
+                    && _meal.CurrentPosition.Y == _snake.HeadPosition.Y)
+                {
+                    _snake.EatMeal();
+                    GameBoard.ActualScore(_snake.Length);
+                    _meal = new Meal();
+                    _meal.CreateMeal(_snake.Tail);
+                    _frameRate /= AccelerationRate;
+                }
+
+                if (_snake.GameOver)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"GAME OVER. YOUR SCORE:{_snake.Length}");
+                    Console.WriteLine("1. Aby zagrać ponownie wciśnij: N");
+                    Console.WriteLine("2. Aby wyjśc z gry wciśnij: Q");
+                    ConsoleKeyInfo userInput = Console.ReadKey();
+                    switch (userInput.Key)
                     {
-                        case ConsoleKey.Escape:
+                        case ConsoleKey.Q:
                             _isRunning = false;
                             break;
-                        case ConsoleKey.DownArrow:
-                            _snake.Direction = Direction.Down;
-                            //move
+                        case ConsoleKey.N:
+                            RefreshGame();
+                            StartGame();
                             break;
-                        case ConsoleKey.UpArrow:
-                            _snake.Direction = Direction.Up;
-                            //move
-                            break;
-                        case ConsoleKey.LeftArrow:
-                            _snake.Direction = Direction.Left;
-                            //move
-                            break;
-                        case ConsoleKey.RightArrow:
-                            _snake.Direction = Direction.Right;
-                            //move
-                            break;
-
-
                     }
-
-
                 }
-                if ((DateTime.Now - _lastDate).TotalMilliseconds >= _frameRate)
-                {
-                    //Game Action
-                    _snake.Move();
 
-
-                    if (_meal.CurrentPosition.X == _snake.HeadPosition.X
-                        && _meal.CurrentPosition.Y == _snake.HeadPosition.Y)
-                    {
-                        _snake.EatMeal();
-                        _meal = new Meal();
-                        _meal.CreateMeal(_snake.Tail);                        
-                        _frameRate /= AccelerationRate;
-                    }
-
-                    if (_snake.GameOver)
-                    {
-                        Console.Clear();
-                        Console.WriteLine($"GAME OVER. YOUR SCORE:{_snake.Length}");
-                        Console.WriteLine("1. Aby zagrać ponownie wciśnij: N");
-                        Console.WriteLine("2. Aby wyjśc z gry wciśnij: Q");
-                        ConsoleKeyInfo userInput = Console.ReadKey();
-                        switch (userInput.Key)
-                        {
-                            case ConsoleKey.Q:
-                                _isRunning = false;
-                                break;
-                            case ConsoleKey.N:
-                                RefreshGame();
-                                StartGame();
-                                break;
-                        }                        
-                    }
-
-                    _lastDate = DateTime.Now;
-                }
+                _lastDate = DateTime.Now;
             }
         }
     }
