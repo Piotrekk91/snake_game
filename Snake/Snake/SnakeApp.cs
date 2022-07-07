@@ -12,6 +12,7 @@ namespace Snake
         private Snake _snake { get; set; }
         private Meal _meal { get; set; }
         private bool _isRunning { get; set; }
+        private bool _isPausing { get; set; }
         private DateTime _lastDate { get; set; }
         private double _frameRate { get; set; }
 
@@ -21,7 +22,7 @@ namespace Snake
             Console.Clear();
             GameBoard.DrawGameBoard();
             _snake = new Snake();
-            
+            GameBoard.ActualScore(_snake.Length);
             _meal = new Meal();
             _meal.CreateMeal(_snake.Tail);
             _isRunning = true;
@@ -62,8 +63,12 @@ namespace Snake
             while (_isRunning)
             {
                 SnakeControl();
-                GameAction();
-                
+
+                while (!_isPausing)
+                {
+                    SnakeControl();
+                    GameAction();
+                }                
             }
         }
         public void SnakeControl()
@@ -75,6 +80,10 @@ namespace Snake
                 {
                     case ConsoleKey.Escape:
                         _isRunning = false;
+                        break;
+                    case ConsoleKey.Backspace:
+                        _isPausing = !_isPausing;
+                        GameBoard.DrawPauseGame(_isPausing);
                         break;
                     case ConsoleKey.DownArrow:
                         _snake.Direction = Direction.Down;
@@ -92,13 +101,8 @@ namespace Snake
                         _snake.Direction = Direction.Right;
                         //move
                         break;
-
-
                 }
-
-
             }
-
         }
         public void GameAction()
         {

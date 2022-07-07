@@ -22,15 +22,37 @@ namespace Snake
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("~");
             }
-
+            Console.SetCursorPosition(105,5);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("ABY ZATRZYMAĆ GRĘ WCIŚNIJ BACKSPACE");  //35
         }
         public static void ActualScore(int snakeLength)
         {
 
-            Console.SetCursorPosition(105, 5);
+            Console.SetCursorPosition(105, 2);
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"YOUR ACTUAL SCORE: {snakeLength}");
 
+        }
+        public static void DrawPauseGame(bool isPausing)
+        {
+            if (isPausing)
+            {
+                Console.SetCursorPosition(105, 4);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("GRA ZATRZYMANA");
+                Console.SetCursorPosition(105, 5);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ABY WZNOWIĆ GRĘ WCIŚNIJ BAKSPACE");
+            }
+            else
+            {
+                Console.SetCursorPosition(105, 4);
+                Console.WriteLine("              ");
+                Console.SetCursorPosition(105,5);
+                Console.WriteLine("                                     ");
+            }           
+            
         }
 
     }
